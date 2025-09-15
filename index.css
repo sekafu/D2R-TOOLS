@@ -1,0 +1,489 @@
+/* D2R攻略ツール トップページ専用スタイル */
+
+/* ========================================
+   ヒーローセクション
+======================================== */
+
+.hero {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--accent) 100%);
+  padding: var(--spacing-3xl) 0;
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23e94560" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)" /></svg>');
+  opacity: 0.3;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-title {
+  font-size: var(--font-size-4xl);
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xl);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-2xl);
+  flex-wrap: wrap;
+  margin-top: var(--spacing-xl);
+}
+
+.hero-stat {
+  text-align: center;
+  min-width: 120px;
+}
+
+.hero-stat-number {
+  display: block;
+  font-size: var(--font-size-3xl);
+  font-weight: bold;
+  color: var(--primary-color);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.hero-stat-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+   ツールグリッド
+======================================== */
+
+.tools-grid {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.tool-card {
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(233, 69, 96, 0.1), transparent);
+  transition: left var(--transition-slow);
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-xl);
+  text-decoration: none;
+  color: inherit;
+}
+
+.tool-card:hover::before {
+  left: 100%;
+}
+
+.tool-icon {
+  font-size: var(--font-size-4xl);
+  margin-bottom: var(--spacing-md);
+  display: block;
+  text-align: center;
+}
+
+.tool-title {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.tool-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+  flex-grow: 1;
+}
+
+.tool-features {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.tool-status {
+  text-align: center;
+  margin-top: auto;
+}
+
+/* ========================================
+   ニュースセクション
+======================================== */
+
+.news-section {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  border: 1px solid var(--border);
+  margin-bottom: var(--spacing-xl);
+}
+
+.news-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.news-item {
+  padding: var(--spacing-lg) 0;
+  border-bottom: 1px solid var(--border);
+  transition: background-color var(--transition-normal);
+}
+
+.news-item:last-child {
+  border-bottom: none;
+}
+
+.news-item:hover {
+  background-color: rgba(233, 69, 96, 0.03);
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+  margin-left: calc(-1 * var(--spacing-md));
+  margin-right: calc(-1 * var(--spacing-md));
+  border-radius: var(--border-radius-sm);
+}
+
+.news-date {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+}
+
+.news-title {
+  font-weight: bold;
+  margin-bottom: var(--spacing-sm);
+  color: var(--primary-color);
+  font-size: var(--font-size-lg);
+}
+
+.news-content {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ========================================
+   特徴セクション
+======================================== */
+
+.features-grid {
+  margin-bottom: var(--spacing-xl);
+}
+
+.feature-card {
+  text-align: center;
+  padding: var(--spacing-xl);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.feature-icon {
+  margin-bottom: var(--spacing-md);
+}
+
+.feature-title {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.feature-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========================================
+   ステータス表示の改善
+======================================== */
+
+.hero-stat-number {
+  background: linear-gradient(135deg, var(--primary-color), #d63851);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: statsCounter 2s ease-out;
+}
+
+@keyframes statsCounter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   レスポンシブ対応
+======================================== */
+
+/* タブレット */
+@media (max-width: 768px) {
+  .hero {
+    padding: var(--spacing-xl) 0;
+  }
+
+  .hero-title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .hero-subtitle {
+    font-size: var(--font-size-base);
+    padding: 0 var(--spacing-md);
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .hero-stats {
+    gap: var(--spacing-lg);
+  }
+
+  .hero-stat {
+    min-width: 100px;
+  }
+
+  .hero-stat-number {
+    font-size: var(--font-size-2xl);
+  }
+
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .news-section {
+    padding: var(--spacing-md);
+  }
+
+  .feature-card {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* スマートフォン */
+@media (max-width: 576px) {
+  .hero {
+    padding: var(--spacing-lg) 0;
+  }
+
+  .hero-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .hero-subtitle {
+    font-size: var(--font-size-sm);
+  }
+
+  .hero-stats {
+    gap: var(--spacing-md);
+  }
+
+  .hero-stat {
+    min-width: 80px;
+  }
+
+  .hero-stat-number {
+    font-size: var(--font-size-xl);
+  }
+
+  .hero-stat-label {
+    font-size: var(--font-size-xs);
+  }
+
+  .tool-card {
+    padding: var(--spacing-md);
+  }
+
+  .tool-icon {
+    font-size: var(--font-size-3xl);
+  }
+
+  .tool-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .news-section {
+    padding: var(--spacing-sm);
+  }
+
+  .news-item {
+    padding: var(--spacing-md) 0;
+  }
+
+  .feature-card {
+    padding: var(--spacing-md);
+  }
+
+  .feature-title {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* 大画面での調整 */
+@media (min-width: 1400px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+
+  .hero-subtitle {
+    font-size: var(--font-size-xl);
+  }
+
+  .tools-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .tool-card {
+    padding: var(--spacing-xl);
+  }
+}
+
+/* ========================================
+   アニメーション効果
+======================================== */
+
+.tool-card {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.tool-card:nth-child(1) { animation-delay: 0.1s; }
+.tool-card:nth-child(2) { animation-delay: 0.2s; }
+.tool-card:nth-child(3) { animation-delay: 0.3s; }
+.tool-card:nth-child(4) { animation-delay: 0.4s; }
+.tool-card:nth-child(5) { animation-delay: 0.5s; }
+.tool-card:nth-child(6) { animation-delay: 0.6s; }
+.tool-card:nth-child(7) { animation-delay: 0.7s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.news-item {
+  animation: fadeIn 0.8s ease-out;
+  animation-fill-mode: both;
+}
+
+.news-item:nth-child(1) { animation-delay: 0.2s; }
+.news-item:nth-child(2) { animation-delay: 0.4s; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   印刷スタイル
+======================================== */
+
+@media print {
+  .hero::before {
+    display: none;
+  }
+  
+  .tool-card::before {
+    display: none;
+  }
+  
+  .hero {
+    background: none !important;
+    color: black !important;
+  }
+  
+  .tool-card,
+  .feature-card,
+  .news-section {
+    border: 1px solid #ccc !important;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}

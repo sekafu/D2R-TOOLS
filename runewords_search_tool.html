@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D2R ルーンワード検索ツール</title>
+    <style>
+        /* CSS変数定義 */
+        :root {
+            --primary-color: #e94560;
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --accent: #0f4c75;
+            --text: #ffffff;
+            --text-secondary: #bbbbbb;
+            --border: rgba(233, 69, 96, 0.3);
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+            --info: #9E9E9E;
+        }
+
+        /* リセット & ベーススタイル */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: rgba(22, 33, 62, 0.9);
+            border-bottom: 2px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* メインコンテナ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* 検索セクション */
+        .search-section {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .search-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .search-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .search-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            background: var(--bg-primary);
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #d63851;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #0d3d61;
+        }
+
+        /* ルーン管理セクション */
+        .rune-management {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .rune-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            margin-top: 1rem;
+        }
+
+        .rune-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: 5px;
+            border: 1px solid var(--border);
+        }
+
+        .rune-name {
+            font-weight: bold;
+        }
+
+        .rune-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rune-count {
+            min-width: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .btn-small {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            min-width: 30px;
+        }
+
+        /* 結果セクション */
+        .results-section {
+            margin-top: 2rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .results-count {
+            color: var(--text-secondary);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border: 2px solid transparent;
+        }
+
+        .filter-btn.active {
+            border-color: var(--primary-color);
+        }
+
+        /* ルーンワードカード */
+        .runeword-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .runeword-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .runeword-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .runeword-card {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .runeword-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .runeword-card--craftable {
+            border-color: var(--success);
+        }
+
+        .runeword-card--almost {
+            border-color: var(--warning);
+        }
+
+        .runeword-card--impossible {
+            border-color: var(--danger);
+        }
+
+        .runeword-card--partial {
+            border-color: var(--info);
+        }
+
+        .runeword-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .runeword-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .runeword-english {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .runeword-level {
+            background: var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .runeword-info {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .info-value {
+            font-weight: bold;
+        }
+
+        .runes-required {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .rune-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 1px solid;
+        }
+
+        .rune-badge--owned {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .rune-badge--missing {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .status-message {
+            padding: 0.75rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .status-message--craftable {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .status-message--almost {
+            background: rgba(255, 152, 0, 0.2);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+
+        .status-message--impossible {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .search-section, .rune-management {
+                padding: 1rem;
+            }
+
+            .filter-buttons {
+                justify-content: center;
+            }
+        }
+
+        /* ユーティリティクラス */
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">D2R攻略ツール</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#">🏠 ホーム</a></li>
+                    <li><a href="#">🔮 ルーンワード</a></li>
+                    <li><a href="#">💎 ルーン</a></li>
+                    <li><a href="#">⚔️ アイテム</a></li>
+                    <li><a href="#">🧮 計算機</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="container">
+        <h1 class="page-title">🔮 ルーンワード検索・管理ツール</h1>
+
+        <!-- 検索セクション -->
+        <section class="search-section">
+            <h2 class="mb-2">🔍 検索・絞り込み</h2>
+            <div class="search-grid">
+                <div class="form-group">
+                    <label for="searchName">ルーンワード名</label>
+                    <input type="text" id="searchName" class="form-control" placeholder="精霊、Spirit など">
+                </div>
+                <div class="form-group">
+                    <label for="searchRune">含むルーン</label>
+                    <select id="searchRune" class="form-control">
+                        <option value="">すべて</option>
+                        <option value="エル">エル (El)</option>
+                        <option value="エルド">エルド (Eld)</option>
+                        <option value="ティア">ティア (Tir)</option>
+                        <option value="ネフ">ネフ (Nef)</option>
+                        <option value="エス">エス (Eth)</option>
+                        <option value="イス">イス (Ith)</option>
+                        <option value="タル">タル (Tal)</option>
+                        <option value="ラル">ラル (Ral)</option>
+                        <option value="オルト">オルト (Ort)</option>
+                        <option value="スル">スル (Thul)</option>
+                        <option value="アムン">アムン (Amn)</option>
+                        <option value="ソル">ソル (Sol)</option>
+                        <option value="シャエル">シャエル (Shael)</option>
+                        <option value="ドル">ドル (Dol)</option>
+                        <option value="ヘル">ヘル (Hel)</option>
+                        <option value="イオ">イオ (Io)</option>
+                        <option value="ラム">ラム (Lum)</option>
+                        <option value="コー">コー (Ko)</option>
+                        <option value="ファル">ファル (Fal)</option>
+                        <option value="レム">レム (Lem)</option>
+                        <option value="プール">プール (Pul)</option>
+                        <option value="ウム">ウム (Um)</option>
+                        <option value="マル">マル (Mal)</option>
+                        <option value="イスト">イスト (Ist)</option>
+                        <option value="グル">グル (Gul)</option>
+                        <option value="ヴェックス">ヴェックス (Vex)</option>
+                        <option value="オーム">オーム (Ohm)</option>
+                        <option value="ロー">ロー (Lo)</option>
+                        <option value="サー">サー (Sur)</option>
+                        <option value="ベル">ベル (Ber)</option>
+                        <option value="ジャー">ジャー (Jah)</option>
+                        <option value="チャム">チャム (Cham)</option>
+                        <option value="ゾッド">ゾッド (Zod)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="searchEquipment">装備タイプ</label>
+                    <select id="searchEquipment" class="form-control">
+                        <option value="">すべて</option>
+                        <option value="武器">武器</option>
+                        <option value="鎧">鎧</option>
+                        <option value="盾">盾</option>
+                        <option value="兜">兜</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="searchSockets">ソケット数</label>
+                    <select id="searchSockets" class="form-control">
+                        <option value="">すべて</option>
+                        <option value="2">2ソケット</option>
+                        <option value="3">3ソケット</option>
+                        <option value="4">4ソケット</option>
+                        <option value="5">5ソケット</option>
+                        <option value="6">6ソケット</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="searchMinLevel">最小レベル</label>
+                    <input type="number" id="searchMinLevel" class="form-control" placeholder="1" min="1" max="99">
+                </div>
+                <div class="form-group">
+                    <label for="searchMaxLevel">最大レベル</label>
+                    <input type="number" id="searchMaxLevel" class="form-control" placeholder="99" min="1" max="99">
+                </div>
+            </div>
+            <div class="text-center mt-2">
+                <button class="btn btn-primary" onclick="searchRunewords()">🔍 検索</button>
+                <button class="btn btn-secondary" onclick="resetSearch()">🔄 リセット</button>
+            </div>
+        </section>
+
+        <!-- ルーン管理セクション -->
+        <section class="rune-management">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2>💎 ルーン在庫管理</h2>
+                <div>
+                    <button class="btn btn-secondary btn-small" onclick="resetRunes()">リセット</button>
+                    <button class="btn btn-secondary btn-small" onclick="exportRunes()">エクスポート</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importRunes(event)">
+                    <button class="btn btn-secondary btn-small" onclick="document.getElementById('importFile').click()">インポート</button>
+                </div>
+            </div>
+            <div class="rune-grid" id="runeGrid"></div>
+        </section>
+
+        <!-- 結果セクション -->
+        <section class="results-section">
+            <div class="results-header">
+                <h2>📋 検索結果</h2>
+                <div class="filter-buttons">
+                    <button class="btn filter-btn btn-secondary active" data-filter="all" onclick="setFilter('all')">すべて</button>
+                    <button class="btn filter-btn btn-secondary" data-filter="craftable" onclick="setFilter('craftable')">🟢 作成可能</button>
+                    <button class="btn filter-btn btn-secondary" data-filter="almost" onclick="setFilter('almost')">🟡 あと少し</button>
+                    <button class="btn filter-btn btn-secondary" data-filter="impossible" onclick="setFilter('impossible')">🔴 作成不可</button>
+                </div>
+            </div>
+            <div class="results-count" id="resultsCount">0件のルーンワードが見つかりました</div>
+            <div class="runeword-grid" id="runewordResults"></div>
+        </section>
+    </main>
+
+    <script>
+        // サンプルルーンワードデータ
+        const RUNEWORDS = [
+            {
+                id: 'spirit',
+                name: '精霊',
+                english: 'Spirit',
+                level: 25,
+                sockets: 4,
+                equipment: ['剣', '盾'],
+                runes: ['タル', 'スル', 'オルト', 'アムン'],
+                effects: [
+                    '全スキルレベル+2',
+                    'スキル発動速度（FCR）+25~35%',
+                    'ヒットリカバリー速度（FHR）+55%',
+                    'マナ+89~112',
+                    '冷気ダメージ+3~8',
+                    'ライトニング・ボルト（レベル1、60回使用可能）',
+                    '生命力+22',
+                    '魔法アイテム発見確率+10~20%'
+                ],
+                version: 'Ver. 1.10'
+            },
+            {
+                id: 'insight',
+                name: '洞察',
+                english: 'Insight',
+                level: 27,
+                sockets: 4,
+                equipment: ['ポールアーム', '杖'],
+                runes: ['ラル', 'ティア', 'タル', 'ソル'],
+                effects: [
+                    'レベル12~17 メディテーション・オーラ',
+                    'スキル発動速度（FCR）+35%',
+                    'クリティカル・ストライク+200~260%',
+                    '攻撃速度（IAS）+23%',
+                    '全耐性+5~25',
+                    '敵の物理ダメージ軽減-7',
+                    'マナ増加+8~16'
+                ],
+                version: 'Ver. 1.10'
+            },
+            {
+                id: 'enigma',
+                name: '謎',
+                english: 'Enigma',
+                level: 65,
+                sockets: 3,
+                equipment: ['鎧'],
+                runes: ['ジャー', 'イス', 'ベル'],
+                effects: [
+                    'テレポート（レベル1、無制限使用可能）',
+                    '全スキルレベル+2',
+                    '筋力+0.75×キャラクターレベル',
+                    'ライフ+500~750',
+                    'マナ+500~750',
+                    '全耐性+5',
+                    'ダメージ軽減（％）+8',
+                    '魔法ダメージ軽減+14',
+                    '魔法アイテム発見確率+50~100%'
+                ],
+                version: 'Ver. 1.10'
+            },
+            {
+                id: 'stealth',
+                name: '隠密',
+                english: 'Stealth',
+                level: 17,
+                sockets: 2,
+                equipment: ['鎧'],
+                runes: ['タル', 'エス'],
+                effects: [
+                    '魔法ダメージ軽減+3',
+                    '移動速度+25%',
+                    '攻撃速度（IAS）+25%',
+                    'スキル発動速度（FCR）+25%',
+                    'ヒットリカバリー速度（FHR）+25%',
+                    '毒抵抗+30%',
+                    '再生能力+10'
+                ],
+                version: 'Ver. 1.09'
+            },
+            {
+                id: 'leaf',
+                name: '葉',
+                english: 'Leaf',
+                level: 19,
+                sockets: 2,
+                equipment: ['杖'],
+                runes: ['ティア', 'ラル'],
+                effects: [
+                    '火炎スキル+3（ソーサレス専用）',
+                    'ファイア・ボルト（レベル14、60回使用可能）',
+                    'ファイアーボール（レベル18、60回使用可能）',
+                    'ファイア・ボルト+3',
+                    'インフェルノ+3',
+                    'ウォームス+3',
+                    '火炎抵抗+33%',
+                    '冷気抵抗+2',
+                    '防御力+2~6'
+                ],
+                version: 'Ver. 1.09'
+            }
+        ];
+
+        // ルーン一覧
+        const RUNES = [
+            'エル', 'エルド', 'ティア', 'ネフ', 'エス', 'イス', 'タル', 'ラル',
+            'オルト', 'スル', 'アムン', 'ソル', 'シャエル', 'ドル', 'ヘル', 'イオ',
+            'ラム', 'コー', 'ファル', 'レム', 'プール', 'ウム', 'マル', 'イスト',
+            'グル', 'ヴェックス', 'オーム', 'ロー', 'サー', 'ベル', 'ジャー', 'チャム', 'ゾッド'
+        ];
+
+        // グローバル変数
+        let playerRunes = {};
+        let currentFilter = 'all';
+        let filteredResults = [];
+
+        // 初期化
+        function init() {
+            loadPlayerRunes();
+            renderRuneGrid();
+            searchRunewords();
+        }
+
+        // LocalStorageからルーン所持数を読み込み
+        function loadPlayerRunes() {
+            const saved = localStorage.getItem('d2r-player-runes');
+            if (saved) {
+                playerRunes = JSON.parse(saved);
+            } else {
+                // 初期化：すべてのルーンを0個に設定
+                RUNES.forEach(rune => {
+                    playerRunes[rune] = 0;
+                });
+            }
+        }
+
+        // ルーン所持数をLocalStorageに保存
+        function savePlayerRunes() {
+            localStorage.setItem('d2r-player-runes', JSON.stringify(playerRunes));
+        }
+
+        // ルーングリッドを表示
+        function renderRuneGrid() {
+            const grid = document.getElementById('runeGrid');
+            grid.innerHTML = '';
+
+            RUNES.forEach(rune => {
+                const runeItem = document.createElement('div');
+                runeItem.className = 'rune-item';
+                runeItem.innerHTML = `
+                    <span class="rune-name">${rune}</span>
+                    <div class="rune-controls">
+                        <button class="btn btn-danger btn-small" onclick="changeRuneCount('${rune}', -1)">-</button>
+                        <span class="rune-count">${playerRunes[rune] || 0}</span>
+                        <button class="btn btn-primary btn-small" onclick="changeRuneCount('${rune}', 1)">+</button>
+                    </div>
+                `;
+                grid.appendChild(runeItem);
+            });
+        }
+
+        // ルーン個数を変更
+        function changeRuneCount(runeName, delta) {
+            const currentCount = playerRunes[runeName] || 0;
+            const newCount = Math.max(0, currentCount + delta);
+            playerRunes[runeName] = newCount;
+            savePlayerRunes();
+            renderRuneGrid();
+            searchRunewords(); // 結果を更新
+        }
+
+        // ルーン所持数をリセット
+        function resetRunes() {
+            if (confirm('すべてのルーン所持数を0にリセットしますか？')) {
+                RUNES.forEach(rune => {
+                    playerRunes[rune] = 0;
+                });
+                savePlayerRunes();
+                renderRuneGrid();
+                searchRunewords();
+            }
+        }
+
+        // ルーンデータをエクスポート
+        function exportRunes() {
+            const data = {
+                playerRunes: playerRunes,
+                exportDate: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'd2r-runes-backup.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // ルーンデータをインポート
+        function importRunes(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.playerRunes) {
+                        playerRunes = data.playerRunes;
+                        savePlayerRunes();
+                        renderRuneGrid();
+                        searchRunewords();
+                        alert('ルーンデータをインポートしました');
+                    } else {
+                        alert('無効なファイル形式です');
+                    }
+                } catch (error) {
+                    alert('ファイルの読み込みに失敗しました');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ルーンワード検索
+        function searchRunewords() {
+            const name = document.getElementById('searchName').value.toLowerCase();
+            const rune = document.getElementById('searchRune').value;
+            const equipment = document.getElementById('searchEquipment').value;
+            const sockets = document.getElementById('searchSockets').value;
+            const minLevel = parseInt(document.getElementById('searchMinLevel').value) || 0;
+            const maxLevel = parseInt(document.getElementById('searchMaxLevel').value) || 99;
+
+            filteredResults = RUNEWORDS.filter(rw => {
+                // 名前検索
+                if (name && !rw.name.toLowerCase().includes(name) && !rw.english.toLowerCase().includes(name)) {
+                    return false;
+                }
+
+                // ルーン検索
+                if (rune && !rw.runes.includes(rune)) {
+                    return false;
+                }
+
+                // 装備タイプ
+                if (equipment && !rw.equipment.some(eq => eq.includes(equipment))) {
+                    return false;
+                }
+
+                // ソケット数
+                if (sockets && rw.sockets !== parseInt(sockets)) {
+                    return false;
+                }
+
+                // レベル範囲
+                if (rw.level < minLevel || rw.level > maxLevel) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            renderResults();
+        }
+
+        // 検索をリセット
+        function resetSearch() {
+            document.getElementById('searchName').value = '';
+            document.getElementById('searchRune').value = '';
+            document.getElementById('searchEquipment').value = '';
+            document.getElementById('searchSockets').value = '';
+            document.getElementById('searchMinLevel').value = '';
+            document.getElementById('searchMaxLevel').value = '';
+            searchRunewords();
+        }
+
+        // フィルターを設定
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === filter);
+            });
+            renderResults();
+        }
+
+        // 作成可能性を判定
+        function getCraftabilityStatus(runeword) {
+            const missing = [];
+            let totalMissing = 0;
+
+            for (const requiredRune of runeword.runes) {
+                const owned = playerRunes[requiredRune] || 0;
+                if (owned === 0) {
+                    missing.push(requiredRune);
+                    totalMissing++;
+                }
+            }
+
+            if (totalMissing === 0) return 'craftable';
+            if (totalMissing <= 2) return 'almost';
+            if (missing.length === runeword.runes.length) return 'impossible';
+            return 'partial';
+        }
+
+        // 結果を表示
+        function renderResults() {
+            const container = document.getElementById('runewordResults');
+            const countElement = document.getElementById('resultsCount');
+
+            // フィルター適用
+            let displayResults = filteredResults;
+            if (currentFilter !== 'all') {
+                displayResults = filteredResults.filter(rw => {
+                    const status = getCraftabilityStatus(rw);
+                    return status === currentFilter;
+                });
+            }
+
+            countElement.textContent = `${displayResults.length}件のルーンワードが見つかりました`;
+            container.innerHTML = '';
+
+            displayResults.forEach(runeword => {
+                const status = getCraftabilityStatus(runeword);
+                const card = document.createElement('div');
+                card.className = `runeword-card runeword-card--${status}`;
+
+                const statusMessages = {
+                    craftable: '✅ 作成可能！',
+                    almost: '⚠️ あと少しで作成可能',
+                    impossible: '❌ 作成不可能',
+                    partial: '🔶 一部ルーン所持'
+                };
+
+                const statusClasses = {
+                    craftable: 'status-message--craftable',
+                    almost: 'status-message--almost',
+                    impossible: 'status-message--impossible',
+                    partial: 'status-message--almost'
+                };
+
+                card.innerHTML = `
+                    <div class="runeword-header">
+                        <div>
+                            <div class="runeword-name">${runeword.name}</div>
+                            <div class="runeword-english">${runeword.english}</div>
+                        </div>
+                        <div class="runeword-level">Lv.${runeword.level}</div>
+                    </div>
+                    <div class="runeword-info">
+                        <div class="info-row">
+                            <span class="info-label">装備タイプ</span>
+                            <span class="info-value">${runeword.equipment.join(', ')}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">ソケット数</span>
+                            <span class="info-value">${runeword.sockets}</span>
+                        </div>
+                    </div>
+                    <div class="runes-required">
+                        ${runeword.runes.map(rune => {
+                            const owned = playerRunes[rune] || 0;
+                            const hasRune = owned > 0;
+                            return `<span class="rune-badge ${hasRune ? 'rune-badge--owned' : 'rune-badge--missing'}">
+                                ${rune} ${hasRune ? '✅' : '❌'}
+                            </span>`;
+                        }).join('')}
+                    </div>
+                    <div class="status-message ${statusClasses[status]}">
+                        ${statusMessages[status]}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // ページ読み込み時に初期化
+        document.addEventListener('DOMContentLoaded', init);
+
+        // 検索フィールドでのEnterキー対応
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchRunewords();
+            }
+        });
+    </script>
+</body>
+</html>

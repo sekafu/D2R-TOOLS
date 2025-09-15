@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D2R攻略ツール - Diablo 2 Resurrected 攻略・管理ツール</title>
+    <meta name="description" content="Diablo 2 Resurrected (D2R) の包括的な攻略ツール。ルーンワード検索、ルーン管理、アイテム情報など。">
+    
+    <!-- CSS読み込み -->
+    <link rel="stylesheet" href="./shared/css/variables.css">
+    <link rel="stylesheet" href="./shared/css/common.css">
+    <link rel="stylesheet" href="./shared/css/components.css">
+    <link rel="stylesheet" href="./index.css">
+
+    <!-- ファビコン -->
+    <link rel="icon" type="image/x-icon" href="./shared/images/favicon.ico">
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">D2R攻略ツール</a>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="/" class="active">🏠 ホーム</a></li>
+                        <li><a href="./runewords/">🔮 ルーンワード</a></li>
+                        <li><a href="./runes/">💎 ルーン</a></li>
+                        <li><a href="./items/">⚔️ アイテム</a></li>
+                        <li><a href="./builds/">🛡️ ビルド</a></li>
+                        <li><a href="./calculators/">🧮 計算機</a></li>
+                        <li><a href="./cube-recipes/">📦 キューブ</a></li>
+                        <li><a href="./maps/">🗺️ マップ</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+        <!-- ヒーローセクション -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title">D2R攻略ツール</h1>
+                <p class="hero-subtitle">
+                    Diablo 2 Resurrected の包括的な攻略・管理ツール<br>
+                    ルーンワード検索、アイテム管理、計算機など便利な機能を無料で提供
+                </p>
+                <div class="hero-actions">
+                    <a href="./runewords/" class="btn btn-primary btn-large">🔮 ルーンワード検索</a>
+                    <a href="./calculators/" class="btn btn-outline-primary btn-large">🧮 計算機ツール</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-number" id="runewordCount">178+</span>
+                        <span class="hero-stat-label">ルーンワード</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number" id="runeCount">33</span>
+                        <span class="hero-stat-label">ルーン種類</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number" id="userCount">1000+</span>
+                        <span class="hero-stat-label">利用者数</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ツール一覧 -->
+        <section class="container">
+            <h2 class="section-title text-center mb-5">🛠️ 利用可能なツール</h2>
+            <div class="tools-grid grid grid-auto">
+                
+                <!-- ルーンワード検索 -->
+                <a href="./runewords/" class="tool-card card">
+                    <div class="tool-icon">🔮</div>
+                    <h3 class="tool-title">ルーンワード検索・管理</h3>
+                    <p class="tool-description">
+                        全ルーンワードの検索・絞り込み機能。ルーン在庫管理で作成可能性を即座に判定。
+                    </p>
+                    <div class="tool-features">
+                        <span class="badge badge-success">✅ 検索機能</span>
+                        <span class="badge badge-success">✅ 在庫管理</span>
+                        <span class="badge badge-success">✅ 作成判定</span>
+                    </div>
+                    <div class="tool-status">
+                        <span class="badge badge-success">利用可能</span>
+                    </div>
+                </a>
+
+                <!-- ルーン詳細 -->
+                <a href="./runes/" class="tool-card card">
+                    <div class="tool-icon">💎</div>
+                    <h3 class="tool-title">ルーン詳細情報</h3>
+                    <p class="tool-description">
+                        各ルーンの詳細情報、ドロップ場所、キューブでの合成方法を詳しく解説。
+                    </p>
+                    <div class="tool-features">
+                        <span class="badge badge-warning">🔄 開発中</span>
+                        <span class="badge badge-outline-primary">ドロップ率</span>
+                        <span class="badge badge-outline-primary">合成方法</span>
+                    </div>
+                    <div class="tool-status">
+                        <span class="badge badge-warning">開発中</span>
+                    </div>
+                </a>
+
+                <!-- アイテム検索 -->
+                <a href="./items/" class="tool-card card">
+                    <div class="tool-icon">⚔️</div>
+                    <h3 class="tool-title">アイテム検索</h3>
+                    <p class="tool-description">
+                        ユニーク・セット・レアアイテム検索。アイテム比較機能でベスト装備を発見。
+                    </p>
+                    <div class="tool-features">
+                        <span class="badge badge-info">📋 計画中</span>
+                        <span class="badge badge-outline-primary">比較機能</span>
+                        <span class="badge badge-outline-primary">検索機能</span>
+                    </div>
+                    <div class="tool-status">
+                        <span class="badge badge-info">計画中</span>
+                    </div>
+                </a>
+
+                <!-- ビルドガイド -->
+                <a href="./builds/" class="tool-card card">
+                    <div class="tool-icon">🛡️</div>
+                    <h3 class="tool-title">ビルドガイド</h3>
+                    <p class="tool-description">
+                        クラス別おすすめビルド、レベリング順序、装備推奨などの包括的ガイド。
+                    </p>
+                    <div class="tool-features">
+                        <span class="badge badge-info">📋 計画中</span>
+                        <span class="badge badge-outline-primary">全クラス対応</span>
+                        <span class="badge badge-outline-primary">レベリング</span>
+                    </div>
+                    <div class="tool-status">
+                        <span class="badge badge-info">計画中</span>
+                    </div>
+                </a>
+
+                <!-- 計算機 -->
+                <a href="./calculators/" class="tool-card card">
+                    <div class="tool-icon">🧮</div>
+                    <h3 class="tool-title">各種計算機</h3>
+                    <p class="tool-description">
+                        ダメージ計算機、経験値計算機、MF効率計算機など、様々な計算ツール。
+                    </p>
+                    <div class="tool-features">
+                        <span class="badge badge-warning">🔄 開発中</span>
+                        <span class="badge badge-outline-primary">ダメージ</span>
+                        <span class="badge badge-outline-primary">経験値</span>
+                    </div>
+                    <div class="tool-status">
+                        <span class="badge badge-warning">開発中</span>
+                    </div>
+                </a>
+
+                <!-- キューブレシピ -->
+                <a href="./cube-recipes/" class="tool-card card">
+                    <div class="tool-icon">📦</div>
+                    <h3 class="tool-title">キューブレシピ</h3>
+                    <p class="tool-description">
+                        ホラドリックキューブレシピ検索。アイテムから逆引きで効率的な素材使用法を提案。
+                    </p>
+                    <div class="tool-features">
+                        <span class="badge badge-info">📋 計画中</span>
+                        <span class="badge badge-outline-primary">逆引き</span>
+                        <span class="badge badge-outline-primary">効率化</span>
+                    </div>
+                    <div class="tool-status">
+                        <span class="badge badge-info">計画中</span>
+                    </div>
+                </a>
+
+                <!-- マップ情報 -->
+                <a href="./maps/" class="tool-card card">
+                    <div class="tool-icon">🗺️</div>
+                    <h3 class="tool-title">マップ・レベリング情報</h3>
+                    <p class="tool-description">
+                        レベリング推奨エリア、MFランエリア情報、ボス攻略情報を網羅。
+                    </p>
+                    <div class="tool-features">
+                        <span class="badge badge-info">📋 計画中</span>
+                        <span class="badge badge-outline-primary">レベリング</span>
+                        <span class="badge badge-outline-primary">MFラン</span>
+                    </div>
+                    <div class="tool-status">
+                        <span class="badge badge-info">計画中</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- 最新情報 -->
+        <section class="container">
+            <div class="section news-section">
+                <h2 class="section-title">📰 最新情報・アップデート</h2>
+                <div class="news-list">
+                    <div class="news-item">
+                        <div class="news-date">2025年09月15日</div>
+                        <h3 class="news-title">ルーンワード検索ツール公開</h3>
+                        <p class="news-content">
+                            全ルーンワードの検索・絞り込み機能とルーン在庫管理機能を公開しました。作成可能性の即座判定が可能です。
+                        </p>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-date">2025年09月10日</div>
+                        <h3 class="news-title">プロジェクト開始</h3>
+                        <p class="news-content">
+                            D2R攻略ツールプロジェクトを開始しました。パッチ2.6対応の包括的な攻略ツールを目指します。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特徴・利点 -->
+        <section class="container">
+            <h2 class="section-title text-center mb-5">✨ 特徴・利点</h2>
+            <div class="features-grid grid grid-3">
+                <div class="feature-card card">
+                    <div class="feature-icon text-center mb-3">
+                        <span style="font-size: 3rem;">📱</span>
+                    </div>
+                    <h3 class="feature-title text-center">レスポンシブ対応</h3>
+                    <p class="feature-description text-center">
+                        PC・タブレット・スマートフォンに完全対応。いつでもどこでも快適に利用可能。
+                    </p>
+                </div>
+                <div class="feature-card card">
+                    <div class="feature-icon text-center mb-3">
+                        <span style="font-size: 3rem;">💾</span>
+                    </div>
+                    <h3 class="feature-title text-center">ローカル保存</h3>
+                    <p class="feature-description text-center">
+                        ルーン在庫などのデータはブラウザに保存。プライバシー保護とオフライン対応。
+                    </p>
+                </div>
+                <div class="feature-card card">
+                    <div class="feature-icon text-center mb-3">
+                        <span style="font-size: 3rem;">🆓</span>
+                    </div>
+                    <h3 class="feature-title text-center">完全無料</h3>
+                    <p class="feature-description text-center">
+                        すべての機能を無料で提供。広告なし、登録不要で即座に利用開始。
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="/">ホーム</a>
+                    <a href="./runewords/">ルーンワード</a>
+                    <a href="./about.html">このサイトについて</a>
+                    <a href="./privacy.html">プライバシーポリシー</a>
+                    <a href="https://github.com/yourusername/d2r-tools" target="_blank">GitHub</a>
+                </div>
+                <p>&copy; 2025 D2R攻略ツール. データ出典: <a href="https://innomaroom.hatenablog.com/entry/diablo2resurrected-guide-runewords" target="_blank">いのまるの秘密基地</a></p>
+                <p class="text-secondary">このサイトはDiablo 2 Resurrectedの非公式ツールです。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript読み込み -->
+    <script src="./shared/js/navigation.js"></script>
+    <script src="./shared/js/utils.js"></script>
+    <script src="./index.js"></script>
+</body>
+</html>

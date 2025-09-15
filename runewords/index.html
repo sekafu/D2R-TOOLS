@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ルーンワード検索・管理 - D2R攻略ツール</title>
+    <meta name="description" content="Diablo 2 Resurrected のルーンワード検索・管理ツール。ルーン在庫管理で作成可能性を即座に判定。">
+    
+    <!-- CSS読み込み -->
+    <link rel="stylesheet" href="../shared/css/variables.css">
+    <link rel="stylesheet" href="../shared/css/common.css">
+    <link rel="stylesheet" href="../shared/css/components.css">
+    <link rel="stylesheet" href="./runewords.css">
+
+    <!-- ファビコン -->
+    <link rel="icon" type="image/x-icon" href="../shared/images/favicon.ico">
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="../" class="logo">D2R攻略ツール</a>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="../">🏠 ホーム</a></li>
+                        <li><a href="./" class="active">🔮 ルーンワード</a></li>
+                        <li><a href="../runes/">💎 ルーン</a></li>
+                        <li><a href="../items/">⚔️ アイテム</a></li>
+                        <li><a href="../builds/">🛡️ ビルド</a></li>
+                        <li><a href="../calculators/">🧮 計算機</a></li>
+                        <li><a href="../cube-recipes/">📦 キューブ</a></li>
+                        <li><a href="../maps/">🗺️ マップ</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title">🔮 ルーンワード検索・管理ツール</h1>
+
+            <!-- 検索セクション -->
+            <section class="section search-section">
+                <h2 class="section-title">🔍 検索・絞り込み</h2>
+                <div class="search-form">
+                    <div class="search-row">
+                        <div class="form-group">
+                            <label for="searchName" class="form-label">ルーンワード名</label>
+                            <input type="text" id="searchName" class="form-control" placeholder="精霊、Spirit など">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchRune" class="form-label">含むルーン</label>
+                            <select id="searchRune" class="form-control">
+                                <option value="">すべて</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="searchEquipment" class="form-label">装備タイプ</label>
+                            <select id="searchEquipment" class="form-control">
+                                <option value="">すべて</option>
+                                <optgroup label="武器">
+                                    <option value="剣">剣</option>
+                                    <option value="斧">斧</option>
+                                    <option value="メイス">メイス</option>
+                                    <option value="ポールアーム">ポールアーム</option>
+                                    <option value="杖">杖</option>
+                                    <option value="遠隔武器">遠隔武器</option>
+                                    <option value="フレイル">フレイル</option>
+                                </optgroup>
+                                <optgroup label="防具">
+                                    <option value="鎧">鎧</option>
+                                    <option value="盾">盾</option>
+                                    <option value="兜">兜</option>
+                                    <option value="パラディン盾">パラディン盾</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search-row">
+                        <div class="form-group">
+                            <label for="searchSockets" class="form-label">ソケット数</label>
+                            <select id="searchSockets" class="form-control">
+                                <option value="">すべて</option>
+                                <option value="2">2ソケット</option>
+                                <option value="3">3ソケット</option>
+                                <option value="4">4ソケット</option>
+                                <option value="5">5ソケット</option>
+                                <option value="6">6ソケット</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="searchMinLevel" class="form-label">最小レベル</label>
+                            <input type="number" id="searchMinLevel" class="form-control" placeholder="1" min="1" max="99">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchMaxLevel" class="form-label">最大レベル</label>
+                            <input type="number" id="searchMaxLevel" class="form-control" placeholder="99" min="1" max="99">
+                        </div>
+                    </div>
+                    <div class="search-actions">
+                        <button class="btn btn-primary" onclick="searchRunewords()">🔍 検索</button>
+                        <button class="btn btn-secondary" onclick="resetSearch()">🔄 リセット</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ルーン管理セクション -->
+            <section class="section rune-management">
+                <div class="rune-header">
+                    <h2 class="section-title">💎 ルーン在庫管理</h2>
+                    <div class="rune-actions">
+                        <button class="btn btn-secondary btn-small" onclick="resetRunes()">リセット</button>
+                        <button class="btn btn-secondary btn-small" onclick="exportRunes()">エクスポート</button>
+                        <input type="file" id="importFile" accept=".json" class="hidden" onchange="importRunes(event)">
+                        <button class="btn btn-secondary btn-small" onclick="document.getElementById('importFile').click()">インポート</button>
+                    </div>
+                </div>
+                <div class="rune-grid" id="runeGrid">
+                    <!-- ルーン管理UIがJavaScriptで動的生成される -->
+                </div>
+            </section>
+
+            <!-- 結果セクション -->
+            <section class="section results-section">
+                <div class="results-header">
+                    <h2 class="section-title">📋 検索結果</h2>
+                    <div class="filter-controls">
+                        <div class="filter-buttons">
+                            <button class="btn filter-btn btn-secondary active" data-filter="all" onclick="setFilter('all')">すべて</button>
+                            <button class="btn filter-btn btn-secondary" data-filter="craftable" onclick="setFilter('craftable')">🟢 作成可能</button>
+                            <button class="btn filter-btn btn-secondary" data-filter="almost" onclick="setFilter('almost')">🟡 あと少し</button>
+                            <button class="btn filter-btn btn-secondary" data-filter="impossible" onclick="setFilter('impossible')">🔴 作成不可</button>
+                        </div>
+                        <div class="results-count" id="resultsCount">0件のルーンワードが見つかりました</div>
+                    </div>
+                </div>
+                <div class="runeword-grid" id="runewordResults">
+                    <!-- 検索結果がJavaScriptで動的生成される -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="../">ホーム</a>
+                    <a href="./">ルーンワード</a>
+                    <a href="../about.html">このサイトについて</a>
+                    <a href="../privacy.html">プライバシーポリシー</a>
+                    <a href="https://github.com/yourusername/d2r-tools" target="_blank">GitHub</a>
+                </div>
+                <p>&copy; 2025 D2R攻略ツール. データ出典: <a href="https://innomaroom.hatenablog.com/entry/diablo2resurrected-guide-runewords" target="_blank">いのまるの秘密基地</a></p>
+                <p class="text-secondary">このサイトはDiablo 2 Resurrectedの非公式ツールです。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript読み込み -->
+    <script src="../shared/js/navigation.js"></script>
+    <script src="../shared/js/utils.js"></script>
+    <script src="../shared/js/storage.js"></script>
+    <script src="../shared/data/runewords.js"></script>
+    <script src="../shared/data/runes.js"></script>
+    <script src="./runewords.js"></script>
+</body>
+</html>
