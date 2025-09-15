@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # D2R攻略ツール
 
 Diablo 2 Resurrected の包括的な攻略ツールサイト
@@ -18,3 +19,7 @@ Diablo 2 Resurrected の包括的な攻略ツールサイト
 - HTML5, CSS3, JavaScript
 - Firebase Hosting
 - GitHub Pages
+=======
+# D2R-TOOLS
+Diablo 2 Resurrected 攻略ツール
+>>>>>>> 6a8eb967a6d49c69720dc33847d6ef6521930c1c
